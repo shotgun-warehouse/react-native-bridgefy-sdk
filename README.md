@@ -1,43 +1,71 @@
-# react-native-bridgefy-sdk
+## React Native Android Library Boilerplate
+This project serves as a boilerplate to create custom React Native native modules that can later be installed through NPM and easily be used in production.
 
 ## Getting started
+1. Clone the project
+2. Customize the project name by doing the following:
+    * Edit `author` and `name` in `package.json`
+    * Customize the Java package name (`com.domain.package`) as follows:
+        1. Modify it in `android/src/main/AndroidManifest.xml`.
+        2. Rename the folders starting from `android/src/main/java` to match your package name.
+        3. Adjust `package io.cmichel.boilerplate;` in the top of the `Module.java` and `Package.java` files in `android/src/main//java/package/path` to match it.
+    * Edit the name of your module in 
 
-`$ npm install react-native-bridgefy-sdk --save`
+        ```java
+        @Override
+        public String getName() {
+            return "Boilerplate";
+        }
+        ```
 
-### Mostly automatic installation
+        and adjust it in `index.android.js`
+3. Modify/Build the Project in Android Studio
+    * Start `Android Studio` and select `File -> New -> Import Project` and select the **android** folder of this package.
+    * If you get a `Plugin with id 'android-library' not found` Error, install `android support repository`.
+    * If you get asked to upgrade _gradle_ to a new version, you can skip it.
 
-`$ react-native link react-native-bridgefy-sdk`
+## Installing it as a library in your main project
+There are many ways to do this, here's the way I do it:
 
-### Manual installation
+1. Push it to **GitHub**.
+2. Do `npm install --save git+https://github.com/kekoyde/react-native-bridgefy-sdk.git` in your main project.
+3. Link the library:
+    * Add the following to `android/settings.gradle`:
+        ```
+        include ':react-native-bridgefy-sdk'
+        project(':react-native-bridgefy-sdk').projectDir = new File(settingsDir, '../node_modules/react-native-bridgefy-sdk/android')
+        ```
 
+    * Add the following to `android/app/build.gradle`:
+        ```xml
+        ...
 
-#### iOS
+        dependencies {
+            ...
+            compile project(':react-native-bridgefy-sdk')
+        }
+        ```
+    * Add the following to `android/app/src/main/java/**/MainApplication.java`:
+        ```java
+        package com.motivation;
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-sdk` and add `BridgefySdk.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libBridgefySdk.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
+        import io.cmichel.boilerplate.Package;  // add this for react-native-bridgefy-sdk
 
-#### Android
+        public class MainApplication extends Application implements ReactApplication {
 
-1. Open up `android/app/src/main/java/[...]/MainActivity.java`
-  - Add `import com.bridgefy.react.sdk.BridgefySdkPackage;` to the imports at the top of the file
-  - Add `new BridgefySdkPackage()` to the list returned by the `getPackages()` method
-2. Append the following lines to `android/settings.gradle`:
-  	```
-  	include ':react-native-bridgefy-sdk'
-  	project(':react-native-bridgefy-sdk').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-bridgefy-sdk/android')
-  	```
-3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
-  	```
-      compile project(':react-native-bridgefy-sdk')
-  	```
+            @Override
+            protected List<ReactPackage> getPackages() {
+                return Arrays.<ReactPackage>asList(
+                    new MainReactPackage(),
+                    new Package()     // add this for react-native-bridgefy-sdk
+                );
+            }
+        }
+        ```
+4. Simply `import/require` it by the name defined in your library's `package.json`:
 
-
-## Usage
-```javascript
-import BridgefySdk from 'react-native-bridgefy-sdk';
-
-// TODO: What to do with the module?
-BridgefySdk;
-```
+    ```javascript
+    import Boilerplate from 'react-native-bridgefy-sdk'
+    Boilerplate.show('Boilerplate runs fine', Boilerplate.LONG)
+    ```
+5. You can test and develop your library by importing the `node_modules` library into **Android Studio** if you don't want to install it from _git_ all the time.
