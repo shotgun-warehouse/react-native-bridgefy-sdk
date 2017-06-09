@@ -2,11 +2,11 @@
 
 ## Getting started
 
-`$ npm install react-native-sdk --save`
+`$ npm install react-native-bridgefy-sdk --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-sdk`
+`$ react-native link react-native-bridgefy-sdk`
 
 ### Manual installation
 
