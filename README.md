@@ -25,18 +25,18 @@
   - Add `new BridgefySdkPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
   	```
-  	include ':react-native-sdk'
-  	project(':react-native-sdk').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-sdk/android')
+  	include ':react-native-bridgefy-sdk'
+  	project(':react-native-bridgefy-sdk').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-bridgefy-sdk/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
-      compile project(':react-native-sdk')
+      compile project(':react-native-bridgefy-sdk')
   	```
 
 
 ## Usage
 ```javascript
-import BridgefySdk from 'react-native-sdk';
+import BridgefySdk from 'react-native-bridgefy-sdk';
 
 // TODO: What to do with the module?
 BridgefySdk;
