@@ -1,18 +1,27 @@
-
 {
-  "name": "react-native-sdk",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "react-native-bridgefy-sdk",
+  "version": "0.0.1",
+  "author": "Christoph Michel http://cmichel.io",
+  "private": false,
+  "license": "Unlicense",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kekoyde/react-native-bridgefy-sdk.git"
   },
+  "bugs": {
+    "url": "https://github.com/kekoyde/react-native-bridgefy-sdk/issues"
+  },
+  "homepage": "https://github.com/kekoyde/react-native-bridgefy-sdk",
   "keywords": [
-    "react-native"
+    "react-native",
+    "android",
+    "library"
   ],
-  "author": "",
-  "license": "",
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
   "peerDependencies": {
-    "react-native": "^0.41.2"
+    "react-native": ">=0.38.0"
   }
 }
