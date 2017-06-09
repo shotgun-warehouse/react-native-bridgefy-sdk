@@ -1,5 +1,4 @@
-
-# react-native-sdk
+# react-native-bridgefy-sdk
 
 ## Getting started
 
@@ -42,4 +41,3 @@ import BridgefySdk from 'react-native-sdk';
 // TODO: What to do with the module?
 BridgefySdk;
 ```
-  
