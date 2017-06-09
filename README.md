@@ -1,5 +1,5 @@
-## React Native Android Library Boilerplate
-This project serves as a boilerplate to create custom React Native native modules that can later be installed through NPM and easily be used in production.
+## React Native Android Library Bridgefy
+This project serves as a Bridgefy to create custom React Native native modules that can later be installed through NPM and easily be used in production.
 
 ## Getting started
 1. Clone the project
@@ -14,7 +14,7 @@ This project serves as a boilerplate to create custom React Native native module
         ```java
         @Override
         public String getName() {
-            return "Boilerplate";
+            return "BridgefySDK";
         }
         ```
 
