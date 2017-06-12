@@ -49,7 +49,7 @@ public class BridgefySDK extends RegistrationListener{
         Bridgefy.start(
                 new BridgefyMessages(successMessageCallback, errorMessageCallback),
                 new BridgefyDevices(errorDeviceCallback, successDeviceCallback));
-        
+
     }
 
 
