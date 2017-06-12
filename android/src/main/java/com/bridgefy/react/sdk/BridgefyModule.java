@@ -44,7 +44,7 @@ public class BridgefyModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void sendBroadcastMesssage(ReadableMap message)
+  public void sendBroadcastMessage(ReadableMap message)
   {
     bridgefySDK.sendBroadcastMessage(Utils.getMessageFromMap(message));
   }
