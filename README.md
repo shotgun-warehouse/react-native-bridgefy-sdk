@@ -67,7 +67,11 @@ There are many ways to do this, here's the way I do it:
         View,
         DeviceEventEmitter
     } from 'react-native';
-    
+
+    ```
+4. Register Bridgefy
+    ```javascript
+
     BridgefySDK.init("BRIDGEFY_APY_KEY", 
     (errorCode, message)=>{
       console.log(message + ":" + errorCode);
@@ -77,27 +81,40 @@ There are many ways to do this, here's the way I do it:
     }
     );
 
+    ```
+5. Start Bridgefy SDK
+    ```javascript
+
     ...
 
     BridgefySDK.start();
 
     ...
 
+    ```
+6. Send messages
+    ```javascript
     ...
 
     var message = {
-                    content:{
+                    content:{ // Custom content
                             message:"Hello world!!"
                           },
                     sender_id:userID,
                     receiver_id:device.UserId
                   };
 
+    // Direct Message
         BridgefySDK.sendMessage(message);
 
+    // Broadcast Message
         BridgefySDK.sendBroadcastMessage(message);
 
     ...
+
+    ```
+7. Message and Device listener
+    ```javascript
 
     /*
     * BridgefyMessageListener
@@ -157,4 +174,5 @@ There are many ways to do this, here's the way I do it:
     );
 
     ```
-5. You can test and develop your library by importing the `node_modules` library into **Android Studio** if you don't want to install it from _git_ all the time.
+
+8. You can test and develop your library by importing the `node_modules` library into **Android Studio** if you don't want to install it from _git_ all the time.
