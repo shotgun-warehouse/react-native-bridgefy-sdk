@@ -1,5 +1,6 @@
 package com.bridgefy.react.sdk.framework;
 
+import com.bridgefy.react.sdk.utils.Utils;
 import com.bridgefy.sdk.client.Bridgefy;
 import com.bridgefy.sdk.client.BridgefyClient;
 import com.bridgefy.sdk.client.Message;
@@ -47,7 +48,7 @@ public class BridgefySDK extends RegistrationListener{
 
     @Override
     public void onRegistrationSuccessful(BridgefyClient bridgefyClient) {
-        successRegisterCallback.invoke(bridgefyClient);
+        successRegisterCallback.invoke(Utils.getBridgefyClient(bridgefyClient));
     }
 
     @Override

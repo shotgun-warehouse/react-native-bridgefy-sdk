@@ -1,5 +1,6 @@
 package com.bridgefy.react.sdk.framework;
 
+import com.bridgefy.react.sdk.utils.Utils;
 import com.bridgefy.sdk.client.Device;
 import com.bridgefy.sdk.client.Session;
 import com.bridgefy.sdk.client.StateListener;
@@ -35,11 +36,11 @@ class BridgefyDevices extends StateListener {
 
     @Override
     public void onDeviceConnected(Device device, Session session) {
-        successCallback.invoke("onDeviceConnected", device, session);
+        successCallback.invoke("onDeviceConnected", Utils.getMapForDevice(device), session.getPublicKey());
     }
 
     @Override
     public void onDeviceLost(Device device) {
-        successCallback.invoke("onDeviceLost", device);
+        successCallback.invoke("onDeviceLost", Utils.getMapForDevice(device));
     }
 }

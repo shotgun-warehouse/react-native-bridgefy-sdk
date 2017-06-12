@@ -1,5 +1,6 @@
 package com.bridgefy.react.sdk.framework;
 
+import com.bridgefy.react.sdk.utils.Utils;
 import com.bridgefy.sdk.client.Message;
 import com.bridgefy.sdk.client.MessageListener;
 import com.bridgefy.sdk.framework.exceptions.MessageException;
@@ -21,12 +22,12 @@ class BridgefyMessages extends MessageListener {
 
     @Override
     public void onMessageReceived(Message message) {
-        messageCallback.invoke("onMessageReceived", message);
+        messageCallback.invoke("onMessageReceived", Utils.getMapForMessage(message));
     }
 
     @Override
     public void onMessageSent(Message message) {
-        messageCallback.invoke("onMessageSent", message);
+        messageCallback.invoke("onMessageSent", Utils.getMapForMessage(message));
     }
 
     @Override
@@ -36,11 +37,11 @@ class BridgefyMessages extends MessageListener {
 
     @Override
     public void onMessageFailed(Message message, MessageException e) {
-        errorCallback.invoke("onMessageFailed", message, e.getMessage());
+        errorCallback.invoke("onMessageFailed", Utils.getMapForMessage(message), e.getMessage());
     }
 
     @Override
     public void onBroadcastMessageReceived(Message message) {
-        messageCallback.invoke("onBroadcastMessageReceived", message);
+        messageCallback.invoke("onBroadcastMessageReceived", Utils.getMapForMessage(message));
     }
 }
