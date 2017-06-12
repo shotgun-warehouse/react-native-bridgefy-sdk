@@ -50,6 +50,14 @@ There are many ways to do this, here's the way I do it:
 
     ```javascript
     import BridgefySDK from 'react-native-bridgefy-sdk'
+
+    import {
+        AppRegistry,
+        StyleSheet,
+        Text,
+        View,
+        DeviceEventEmitter
+    } from 'react-native';
     
     BridgefySDK.init("BRIDGEFY_APY_KEY", 
     (errorCode, message)=>{
@@ -111,7 +119,7 @@ There are many ways to do this, here's the way I do it:
                       }
     );
 
-  /*
+    /*
     * BridgefyStateListener
     */    
     DeviceEventEmitter.addListener('onStarted', (device)=> {
