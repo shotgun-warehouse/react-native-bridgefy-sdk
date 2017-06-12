@@ -12,7 +12,7 @@ Import Bridgefy React Native modules that can be installed through NPM and easil
 There are many ways to do this, here's the way I do it:
 
 1. Push it to **GitHub**.
-2. Do `npm install --save git+https://github.com/kekoyde/react-native-bridgefy-sdk.git` in your main project.
+2. Do `npm install --save git+https://kekoyde@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git` in your main project.
 3. Link the library:
     * Add the following to `android/settings.gradle`:
         ```
