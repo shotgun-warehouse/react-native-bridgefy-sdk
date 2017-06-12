@@ -56,7 +56,6 @@ public class Utils {
         WritableMap mapDeviceProfile = new WritableNativeMap();
         mapDeviceProfile.putString("DeviceEvaluation", deviceProfile.getDeviceEvaluation());
         mapDeviceProfile.putInt("Rating", deviceProfile.getRating());
-        mapDeviceProfile.putInt("DeviceCharacteristicsProfile", deviceProfile.getDeviceCharacteristicsProfile$51c1f94e());
         return mapDeviceProfile;
     }
 
