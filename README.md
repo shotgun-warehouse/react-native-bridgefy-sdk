@@ -1,5 +1,5 @@
 ## React Native Android Library Bridgefy
-This project serves as a Bridgefy to create custom React Native native modules that can later be installed through NPM and easily be used in production.
+Import Bridgefy React Native modules that can be installed through NPM and easily be used in production.
 
 ## Getting started
 1. Clone the project
@@ -24,6 +24,15 @@ There are many ways to do this, here's the way I do it:
         ```xml
         ...
 
+        repositories {
+        ...
+            maven {
+                url "http://maven.bridgefy.com/artifactory/libs-release-local"
+                artifactUrls = ["http://jcenter.bintray.com/"]
+            }
+        }
+
+
         dependencies {
             ...
             compile project(':react-native-bridgefy-sdk')
@@ -46,7 +55,7 @@ There are many ways to do this, here's the way I do it:
             }
         }
         ```
-4. Simply `import/require` it by the name defined in your library's `package.json`:
+4. Simply `import/require` it by the name defined in your library's `index.android.js`:
 
     ```javascript
     import BridgefySDK from 'react-native-bridgefy-sdk'
