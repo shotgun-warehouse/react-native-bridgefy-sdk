@@ -6,12 +6,12 @@
   "license": "Unlicense",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kekoyde/react-native-bridgefy-sdk.git"
+    "url": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdk"
   },
   "bugs": {
-    "url": "https://github.com/kekoyde/react-native-bridgefy-sdk/issues"
+    "url": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdkissues"
   },
-  "homepage": "https://github.com/kekoyde/react-native-bridgefy-sdk",
+  "homepage": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdk",
   "keywords": [
     "react-native",
     "android",
