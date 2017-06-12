@@ -31,9 +31,9 @@ public class BridgefyModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void start(Callback errorMessageCallback, Callback successMessageCallback, Callback errorDeviceCallback, Callback successDeviceCallback)
+  public void start()
   {
-    bridgefySDK.startSDK(errorMessageCallback, successMessageCallback, errorDeviceCallback, successDeviceCallback);
+    bridgefySDK.startSDK();
   }
 
   @ReactMethod

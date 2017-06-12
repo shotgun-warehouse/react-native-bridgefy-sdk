@@ -40,15 +40,12 @@ public class BridgefySDK extends RegistrationListener{
     }
 
 
-    public void startSDK(
-            Callback errorMessageCallback,
-            Callback successMessageCallback,
-            Callback errorDeviceCallback,
-            Callback successDeviceCallback){
+    public void startSDK(){
 
         Bridgefy.start(
-                new BridgefyMessages(successMessageCallback, errorMessageCallback),
-                new BridgefyDevices(errorDeviceCallback, successDeviceCallback));
+                new BridgefyMessages(reactContext),
+                new BridgefyDevices(reactContext)
+        );
 
     }
 

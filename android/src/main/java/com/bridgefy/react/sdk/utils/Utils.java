@@ -1,11 +1,15 @@
 package com.bridgefy.react.sdk.utils;
 
+import android.support.annotation.Nullable;
+
 import com.bridgefy.sdk.client.BridgefyClient;
 import com.bridgefy.sdk.client.Device;
 import com.bridgefy.sdk.client.DeviceProfile;
 import com.bridgefy.sdk.client.Message;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
 
 /**
@@ -57,6 +61,10 @@ public class Utils {
         mapDeviceProfile.putString("DeviceEvaluation", deviceProfile.getDeviceEvaluation());
         mapDeviceProfile.putInt("Rating", deviceProfile.getRating());
         return mapDeviceProfile;
+    }
+
+    public static synchronized void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
 
 }
