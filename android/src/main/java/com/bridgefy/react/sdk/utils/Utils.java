@@ -6,19 +6,22 @@ import com.bridgefy.sdk.client.BridgefyClient;
 import com.bridgefy.sdk.client.Device;
 import com.bridgefy.sdk.client.DeviceProfile;
 import com.bridgefy.sdk.client.Message;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.ReadableType;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kekoyde on 6/12/17.
@@ -48,7 +51,7 @@ public class Utils {
         mapMessage.putString("SenderId", message.getSenderId());
         mapMessage.putString("Uuid", message.getUuid());
         mapMessage.putDouble("DateSent", message.getDateSent());
-        mapMessage.putString("Content", new Gson().toJson(message.getContent()));
+        mapMessage.putMap("Content", toWritableMap(message.getContent()));
         return mapMessage;
     }
 
@@ -145,6 +148,68 @@ public class Utils {
             }
         }
         return deconstructedList;
+    }
+
+    public static WritableArray toWritableArray(Object[] array) {
+        WritableArray writableArray = Arguments.createArray();
+
+        for (int i = 0; i < array.length; i++) {
+            Object value = array[i];
+
+            if (value == null) {
+                writableArray.pushNull();
+            }
+            if (value instanceof Boolean) {
+                writableArray.pushBoolean((Boolean) value);
+            }
+            if (value instanceof Double) {
+                writableArray.pushDouble((Double) value);
+            }
+            if (value instanceof Integer) {
+                writableArray.pushInt((Integer) value);
+            }
+            if (value instanceof String) {
+                writableArray.pushString((String) value);
+            }
+            if (value instanceof Map) {
+                writableArray.pushMap(toWritableMap((Map<String, Object>) value));
+            }
+            if (value.getClass().isArray()) {
+                writableArray.pushArray(toWritableArray((Object[]) value));
+            }
+        }
+
+        return writableArray;
+    }
+
+    public static WritableMap toWritableMap(Map<String, Object> map) {
+        WritableMap writableMap = Arguments.createMap();
+        Iterator iterator = map.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry)iterator.next();
+            Object value = pair.getValue();
+
+            if (value == null) {
+                writableMap.putNull((String) pair.getKey());
+            } else if (value instanceof Boolean) {
+                writableMap.putBoolean((String) pair.getKey(), (Boolean) value);
+            } else if (value instanceof Double) {
+                writableMap.putDouble((String) pair.getKey(), (Double) value);
+            } else if (value instanceof Integer) {
+                writableMap.putInt((String) pair.getKey(), (Integer) value);
+            } else if (value instanceof String) {
+                writableMap.putString((String) pair.getKey(), (String) value);
+            } else if (value instanceof Map) {
+                writableMap.putMap((String) pair.getKey(), toWritableMap((Map<String, Object>) value));
+            } else if (value.getClass() != null && value.getClass().isArray()) {
+                writableMap.putArray((String) pair.getKey(), toWritableArray((Object[]) value));
+            }
+
+            iterator.remove();
+        }
+
+        return writableMap;
     }
 
 }
