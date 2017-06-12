@@ -2,11 +2,12 @@
 package com.bridgefy.react.sdk;
 
 import com.bridgefy.react.sdk.framework.BridgefySDK;
-import com.bridgefy.sdk.client.Message;
+import com.bridgefy.react.sdk.utils.Utils;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 
 public class BridgefyModule extends ReactContextBaseJavaModule {
 
@@ -37,15 +38,15 @@ public class BridgefyModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void sendMessage(Message message)
+  public void sendMessage(ReadableMap message)
   {
-    bridgefySDK.sendMessage(message);
+    bridgefySDK.sendMessage(Utils.getMessageFromMap(message));
   }
 
   @ReactMethod
-  public void sendBroadcastMesssage(Message message)
+  public void sendBroadcastMesssage(ReadableMap message)
   {
-    bridgefySDK.sendBroadcastMessage(message);
+    bridgefySDK.sendBroadcastMessage(Utils.getMessageFromMap(message));
   }
 
 }
