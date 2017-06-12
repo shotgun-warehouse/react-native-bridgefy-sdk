@@ -38,7 +38,7 @@ public class Utils {
         map.putString("SECRET_KEY", bridgefyClient.getSecretKey());
         map.putString("UserUuid", bridgefyClient.getUserUuid());
         map.putMap("DeviceProfile", getDeviceProfile(bridgefyClient));
-        return null;
+        return map;
     }
 
     public static synchronized WritableMap getMapForMessage(Message message)
