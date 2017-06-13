@@ -34,9 +34,9 @@ public class BridgefySDK extends RegistrationListener{
 
     public void initialize(String apiKey, Callback error, Callback success)
     {
-        Bridgefy.initialize(reactContext.getApplicationContext(), apiKey, this);
         this.errorRegisterCallback = error;
         this.successRegisterCallback = success;
+        Bridgefy.initialize(reactContext.getApplicationContext(), apiKey, this);
     }
 
 
