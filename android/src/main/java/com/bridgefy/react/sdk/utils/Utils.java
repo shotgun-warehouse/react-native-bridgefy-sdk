@@ -183,6 +183,9 @@ public class Utils {
     }
 
     public static WritableMap toWritableMap(Map<String, Object> map) {
+        if (map == null)
+            return Arguments.createMap();
+
         WritableMap writableMap = Arguments.createMap();
         Iterator iterator = map.entrySet().iterator();
 
