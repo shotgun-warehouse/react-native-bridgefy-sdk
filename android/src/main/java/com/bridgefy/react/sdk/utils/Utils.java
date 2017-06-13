@@ -51,7 +51,8 @@ public class Utils {
         mapMessage.putString("SenderId", message.getSenderId());
         mapMessage.putString("Uuid", message.getUuid());
         mapMessage.putDouble("DateSent", message.getDateSent());
-        mapMessage.putMap("Content", toWritableMap(message.getContent()));
+        if (message.getContent() != null)
+            mapMessage.putMap("Content", toWritableMap(message.getContent()));
         return mapMessage;
     }
 
@@ -183,9 +184,6 @@ public class Utils {
     }
 
     public static WritableMap toWritableMap(Map<String, Object> map) {
-        if (map == null)
-            return Arguments.createMap();
-
         WritableMap writableMap = Arguments.createMap();
         Iterator iterator = map.entrySet().iterator();
 
