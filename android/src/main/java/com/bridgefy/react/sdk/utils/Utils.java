@@ -35,12 +35,12 @@ public class Utils {
     public static synchronized WritableMap getBridgefyClient(BridgefyClient bridgefyClient)
     {
         WritableMap map = new WritableNativeMap();
-        map.putString("API_KEY", bridgefyClient.getApiKey());
-        map.putString("BundleId",bridgefyClient.getBundleId());
-        map.putString("PUBLIC_KEY", bridgefyClient.getPublicKey());
-        map.putString("SECRET_KEY", bridgefyClient.getSecretKey());
-        map.putString("UserUuid", bridgefyClient.getUserUuid());
-        map.putMap("DeviceProfile", getDeviceProfile(bridgefyClient));
+        map.putString("api_key", bridgefyClient.getApiKey());
+        map.putString("bundleId",bridgefyClient.getBundleId());
+        map.putString("public_key", bridgefyClient.getPublicKey());
+        map.putString("secret_key", bridgefyClient.getSecretKey());
+        map.putString("userUuid", bridgefyClient.getUserUuid());
+        map.putMap("deviceProfile", getDeviceProfile(bridgefyClient));
         return map;
     }
 
@@ -84,7 +84,10 @@ public class Utils {
     public static synchronized Message getMessageFromMap(ReadableMap readableMap)
     {
         HashMap content = recursivelyDeconstructReadableMap(readableMap.getMap(CONTENT));
-        Message message = new Message(content, readableMap.getString(RECEIVER_ID), readableMap.getString(SENDER_ID));
+        Message message = new Message(content,
+                readableMap.hasKey(RECEIVER_ID)?readableMap.getString(RECEIVER_ID):"",
+                readableMap.hasKey(SENDER_ID)?readableMap.getString(SENDER_ID):""
+        );
         return message;
     }
 

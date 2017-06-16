@@ -27,8 +27,8 @@ class BridgefyDevices extends StateListener {
     @Override
     public void onStartError(String message, int errorCode) {
         WritableMap writableMap = Arguments.createMap();
-        writableMap.putString("Message", message);
-        writableMap.putInt("ErrorCode", errorCode);
+        writableMap.putString("description", message);
+        writableMap.putInt("code", errorCode);
         Utils.sendEvent(reactContext, "onStartError", writableMap);
     }
 
@@ -40,7 +40,7 @@ class BridgefyDevices extends StateListener {
     @Override
     public void onDeviceConnected(Device device, Session session) {
         WritableMap writableMap = Utils.getMapForDevice(device);
-        writableMap.putString("PublicKey", session.getPublicKey());
+        writableMap.putString("publicKey", session.getPublicKey());
         Utils.sendEvent(reactContext,"onDeviceConnected", writableMap);
     }
 
