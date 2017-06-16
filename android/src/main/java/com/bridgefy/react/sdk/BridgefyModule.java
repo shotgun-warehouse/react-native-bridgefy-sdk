@@ -22,7 +22,7 @@ public class BridgefyModule extends ReactContextBaseJavaModule {
 
   @Override
   public String getName() {
-    return "BridgefySdk";
+    return "Bridgefy";
   }
 
   @ReactMethod

@@ -47,24 +47,24 @@ public class Utils {
     public static synchronized WritableMap getMapForMessage(Message message)
     {
         WritableMap mapMessage = new WritableNativeMap();
-        mapMessage.putString("ReceiverId", message.getReceiverId());
-        mapMessage.putString("SenderId", message.getSenderId());
-        mapMessage.putString("Uuid", message.getUuid());
-        mapMessage.putDouble("DateSent", message.getDateSent());
+        mapMessage.putString("receiverId", message.getReceiverId());
+        mapMessage.putString("senderId", message.getSenderId());
+        mapMessage.putString("uuid", message.getUuid());
+        mapMessage.putDouble("dateSent", message.getDateSent());
         if (message.getContent() != null)
-            mapMessage.putMap("Content", toWritableMap(message.getContent()));
+            mapMessage.putMap("content", toWritableMap(message.getContent()));
         return mapMessage;
     }
 
     public static synchronized WritableMap getMapForDevice(Device device){
         WritableMap mapDevice = new WritableNativeMap();
-        mapDevice.putString("UserId",device.getUserId());
-        mapDevice.putString("DeviceAddress",device.getDeviceAddress());
-        mapDevice.putString("DeviceName",device.getDeviceName());
-        mapDevice.putString("SessionId",device.getSessionId());
-        mapDevice.putString("DeviceType",device.getDeviceType().toString());
-        mapDevice.putDouble("Crc",device.getCrc());
-        mapDevice.putInt("Retries",device.getRetries());
+        mapDevice.putString("userId",device.getUserId());
+        mapDevice.putString("deviceAddress",device.getDeviceAddress());
+        mapDevice.putString("deviceName",device.getDeviceName());
+        mapDevice.putString("sessionId",device.getSessionId());
+        mapDevice.putString("deviceType",device.getDeviceType().toString());
+        mapDevice.putDouble("crc",device.getCrc());
+        mapDevice.putInt("retries",device.getRetries());
         return mapDevice;
     }
 
@@ -72,8 +72,8 @@ public class Utils {
     {
         DeviceProfile deviceProfile = bridgefyClient.getDeviceProfile();
         WritableMap mapDeviceProfile = new WritableNativeMap();
-        mapDeviceProfile.putString("DeviceEvaluation", deviceProfile.getDeviceEvaluation());
-        mapDeviceProfile.putInt("Rating", deviceProfile.getRating());
+        mapDeviceProfile.putString("deviceEvaluation", deviceProfile.getDeviceEvaluation());
+        mapDeviceProfile.putInt("rating", deviceProfile.getRating());
         return mapDeviceProfile;
     }
 
