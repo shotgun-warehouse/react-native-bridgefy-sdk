@@ -27,6 +27,7 @@ class BridgefyDevices extends StateListener {
     @Override
     public void onStartError(String message, int errorCode) {
         WritableMap writableMap = Arguments.createMap();
+        writableMap.putMap("message", Arguments.createMap());
         writableMap.putString("description", message);
         writableMap.putInt("code", errorCode);
         Utils.sendEvent(reactContext, "onStartError", writableMap);

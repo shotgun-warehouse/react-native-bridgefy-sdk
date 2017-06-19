@@ -36,7 +36,9 @@ class BridgefyMessages extends MessageListener {
     public void onMessageReceivedException(String sender, MessageException e) {
         WritableMap writableMap = Arguments.createMap();
         writableMap.putString("sender", sender);
-        writableMap.putString("description", e.getMessage());
+        writableMap.putMap("message", Arguments.createMap());
+        writableMap.putString("description", "Failed to get the original message: [" + e.getMessage()+"]");
+        writableMap.putInt("code", 100);
         Utils.sendEvent(reactContext,"onMessageReceivedException", writableMap);
     }
 
@@ -45,6 +47,7 @@ class BridgefyMessages extends MessageListener {
         WritableMap writableMap = Arguments.createMap();
         writableMap.putMap("message", Utils.getMapForMessage(message));
         writableMap.putString("description", e.getMessage());
+        writableMap.putInt("code", 101);
         Utils.sendEvent(reactContext,"onMessageFailed", writableMap);
     }
 
