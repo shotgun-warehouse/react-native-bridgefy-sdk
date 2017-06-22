@@ -1,13 +1,6 @@
 ## React Native Android Library Bridgefy
 Import Bridgefy React Native modules that can be installed through NPM and easily be used in production.
 
-## Getting started
-1. Clone the project
-2. Modify/Build the Project in Android Studio
-* Start `Android Studio` and select `File -> New -> Import Project` and select the **android** folder of this package.
-* If you get a `Plugin with id 'android-library' not found` Error, install `android support repository`.
-* If you get asked to upgrade _gradle_ to a new version, you can skip it.
-
 ## Installing it as a library in your main project
 There are many ways to do this, here's the way I do it:
 
