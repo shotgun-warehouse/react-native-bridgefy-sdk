@@ -1,21 +1,29 @@
-## React Native Android Library Bridgefy
-Import Bridgefy React Native modules that can be installed through NPM and easily be used in production.
+# React Native interface for Bridgefy
+This repository contains a module for [React Native](https://facebook.github.io/react-native/) that is an interface to use [Bridgefy SDK](https://www.bridgefy.me/), this interface can be used for Android and iOS projects. If you want to know how to use the framework natively in android, you can find it [here](https://github.com/bridgefy/bridgefy-android-samples/blob/master/README.md), in the other hand the official iOS repository is [here](https://bitbucket.org/bridgefy/bridgefy-ios-dist).
 
-## Installing it as a library in your main project
-There are many ways to do this, here's the way I do it:
+## Install on existing project
 
-*1. Push it to **Repository**.*
+**Note: **This section explains how to add Bridgefy to an existing project with native code. If you don't know how to create a Native React project with native code, you can check it [here](https://facebook.github.io/react-native/docs/getting-started.html), under the tab **Building Projects with Native Code**.  
 
-*2. Do `npm install --save npm install --save git+ssh://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git` in your main project.*
+Let's suppose your project name is `AwesomeProject`, go to the root directory of the project and run the following command:
 
-*3. Link the library:*
+```
+npm install --save npm install --save git+ssh://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git
+```
 
- * Add the following to `android/settings.gradle`:
+It will download and install the bridgefy module, don't forget the parameter `--save` if you want to save the dependency in your `package.json`, so you can install/update Bridgefy easier in the future.  
+At this point you already have the module, but in order to be able to use it, you will need to make some configurations for every platform.
+
+### Android install
+
+First, open the project in Android Studio, this is located in `AwesomeProject/android`.  
+<br>
+Once the project is open, you will need to indicate where the module is installed, to do this open the file  `android/settings.gradle` and add the following code:
 ```xml
 include ':react-native-bridgefy-sdk'
 project(':react-native-bridgefy-sdk').projectDir = new File(settingsDir, '../node_modules/react-native-bridgefy-sdk/android'
 ```
- * Add the following to `android/app/build.gradle`:
+After this you will need to indicate the maven repository to download the native SDK and add the React Native interface as a dependency. To do this open the file `android/app/build.gradle` and add the followind code:
 
 ```xml
  repositories {
@@ -29,12 +37,14 @@ project(':react-native-bridgefy-sdk').projectDir = new File(settingsDir, '../nod
 }
 ```
 
- * Add the following to `android/app/src/main/java/**/MainApplication.java`:
+As final step, open the main activuty (`android/app/src/main/java/**/MainApplication.java`) and add the following segments of code:
 
 ```java
-  package com.your.package;
-  import com.bridgefy.react.sdk.BridgefySdkPackage;  // add this for react-native-bridgefy-sdk
-  public class MainApplication extends Application implements ReactApplication {
+  ...
+  // Import the module
+  import com.bridgefy.react.sdk.BridgefySdkPackage;
+  ...
+  // Add this method in the MainApplication class to indicate the packages to use.
   @Override
   protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
@@ -42,8 +52,27 @@ project(':react-native-bridgefy-sdk').projectDir = new File(settingsDir, '../nod
                   new BridgefySdkPackage() // add this for react-native-bridgefy-sdk
             );
           }
-  }
+  ...
 ```
+
+### iOS Install
+
+First, go to the official [Bridgefy iOS repository](https://bitbucket.org/bridgefy/bridgefy-ios-dist) to download the last version of `BFTransmitter.framewok`.
+
+Once you have the framework file, move to `AwesomeProject/ios` and copy there the downloaded file.
+
+Next, move to the root directory (`AwesomeProject`) and run there the following command to link the interface module to the project:
+
+```
+react-native link
+````
+Open the XCode project, you will need to add `BFTransmitter.framework` to "Embedded binaries", you can do this by dragging the file like is shown in the following image:  
+PENDING IMAGE
+
+Finally, select a Development team for the target `AwesomeProject` and  `AwesomeProjectTests` like is shown in the following image:  
+PENDING IMAGE
+
+## Usage
 
 *4. Simply `import/require` it by the name defined in your library's `index.android.js`:*
 
