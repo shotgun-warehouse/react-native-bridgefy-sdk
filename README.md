@@ -17,7 +17,6 @@ At this point you already have the module, but in order to be able to use it, yo
 ### Android install
 
 First, open the project in Android Studio, this is located in `AwesomeProject/android`.  
-<br>
 Once the project is open, you will need to indicate where the module is installed, to do this open the file  `android/settings.gradle` and add the following code:
 ```xml
 include ':react-native-bridgefy-sdk'
