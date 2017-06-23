@@ -225,8 +225,7 @@ You will need to implement some listeners in order to receive messages, detect n
     // This event is launched when the service has been started successfully, it receives
     // a device dictionary that will be descripted in the appendix.
     DeviceEventEmitter.addListener('onStarted', (device)=> {
-                        //Julian
-                        console.log('onStarted: '+ JSON.stringify(device));
+                        // For now, device is an empty dictionary
                       }
     );
 
@@ -335,3 +334,13 @@ julian
 **campo 2:** Description campo 1.  
 
 ### iOS Events
+These are the event codes that can be presented in the listener `onEventOccurred`, this listener will be invoked exclusively on iOS devices:  
+**BFEventStartWaiting(value 0)**:Waiting for online validation to start the transmitter.  
+**BFEventStartFinished(value 1)**:The transmitter was started.  
+**BFEventInternetNeeded(value 2)**:The transmitter needs internet to validate license.  
+**BFEventAlreadyStarted(value 3)**:The transmitter was already started.  
+**BFEventOnlineWarning(value 4)**:Something was detected in backend validation, but if the license is valid, this doesn't stop the transmitter.  
+**BFEventOnlineError(value 5)**:An error was detected in backend validation and service must be stopped.  
+**BFEventNearbyPeerDetected(value 6)**:Indicates if a near peer was detected, this event is only invoked if the app is in background mode and this mode is enabled in the BFTransmitter instance.  
+**BFEventBluetoothDisabled(value 7)**:Indicates that the bluetooth interface was disabled or the app doesn't have permissions.  
+**BFEventWifiDisabled(value 8)**:Indicates that the Wi-fi interface was disabled or the app doesn't have permissions.  
