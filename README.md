@@ -72,7 +72,7 @@ android.permission.ACCESS_COARSE_LOCATION
 First, go to the official [Bridgefy iOS repository](https://bitbucket.org/bridgefy/bridgefy-ios-dist) to download the last version of `BFTransmitter.framewok`.
 
 Once you have the framework file, move to `AwesomeProject/ios` and copy there the downloaded file. Just as is indicated in the following image:  
-![Paste framework file][img/paste]
+![Paste framework file](img/paste.png)  
 
 Next, move to the root directory (`AwesomeProject`) and run there the following command to link the interface module to the project:
 
@@ -80,11 +80,11 @@ Next, move to the root directory (`AwesomeProject`) and run there the following 
 react-native link
 ```
 Open the XCode project, you will need to add `BFTransmitter.framework` to "Embedded binaries", you can do this by dragging the file like is shown in the following image:  
-![Add framework][img/embedded_binaries]
+![Add framework]{img/embedded_binaries.png)
 
 Finally, select a Development team for the target `AwesomeProject` and  `AwesomeProjectTests` like is shown in the following images:  
-![Team][img/select_team]  
-![Tests team][img/select_team_tests]  
+![Team](img/select_team.png)  
+![Tests team](img/select_team_tests.png)  
 At this point you can run the application directly from XCode using a physical device.
 
 ## Usage
