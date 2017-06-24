@@ -310,8 +310,8 @@ This section explain the structure of the dictionaries used before:
 ```javascript
 {
     code: INTEGER_ERROR_CODE,
-    description: 'DESCRIPTION_OF_ERROR'
-    origin: message
+    description: 'DESCRIPTION_OF_ERROR',
+    origin: message,
 }
 ```
 **code:** Code of the error (integer). The code may differ between iOS and Android.  
@@ -320,18 +320,37 @@ This section explain the structure of the dictionaries used before:
 
 ### error (onMessageReceivedException)
 ```javascript
-julian
-estructura
+{
+    code: INTEGER_ERROR_CODE,
+    description: 'DESCRIPTION_OF_ERROR',
+    sender: 'SENDER_USER_IDENTIFIER',
+    message: {},
+}
 ```
-**campo 1:** Description campo 1.  
-**campo 2:** Description campo 1.  
+**code:** Code of the error (integer). The code may differ between iOS and Android.
+**description:** String description of the error.  
+**sender:** String identifier of the sender user.  
+**message:** Message received with failure.  
 
 ### device
 ```javascript
-julian
+{
+    userId: 'USER_IDENTIFIER',
+    deviceAddress: 'BLUETOOTH_DEVICE_ADDRESS',
+    deviceName: 'BLUETOOTH_DEVICE_NAME',
+    sessionId: 'BRIDGEFY_SESSION_ID',
+    deviceType: 'ANTENNA_DEVICE_AVAILABLE',
+    crc: CRC_OF_USER_IDENTIFIER,
+    retries: CONNECTION_ATTEMPS,
+}
 ```
-**campo 1:** Description campo 1.  
-**campo 2:** Description campo 1.  
+**userId:** String identifier of the receiver user.  
+**deviceAddress:** String device address for the antenna BLUETOOTH or BLUETOOTH_LE.  
+**deviceName:** String device name of bluetooth device.  
+**sessionId:** String internal session identifier of bridgefy sdk.  
+**deviceType:** String Antenna name of connectivity (BLUETOOTH, BLUETOOTH_LE).  
+**crc:** Long CRC32 of user identifier.  
+**retries:** Integer connection attempts before success.  
 
 ### iOS Events
 These are the event codes that can be presented in the listener `onEventOccurred`, this listener will be invoked exclusively on iOS devices:  
@@ -343,4 +362,4 @@ These are the event codes that can be presented in the listener `onEventOccurred
 **BFEventOnlineError(value 5)**:An error was detected in backend validation and service must be stopped.  
 **BFEventNearbyPeerDetected(value 6)**:Indicates if a near peer was detected, this event is only invoked if the app is in background mode and this mode is enabled in the BFTransmitter instance.  
 **BFEventBluetoothDisabled(value 7)**:Indicates that the bluetooth interface was disabled or the app doesn't have permissions.  
-**BFEventWifiDisabled(value 8)**:Indicates that the Wi-fi interface was disabled or the app doesn't have permissions.  
+**BFEventWifiDisabled(value 8)**:Indicates that the Wi-fi interface was disabled or the app doesn't have permissions.
