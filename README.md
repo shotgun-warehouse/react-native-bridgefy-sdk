@@ -352,8 +352,10 @@ This section explain the structure of the dictionaries used before:
 **crc:** Long CRC32 of user identifier.  
 **retries:** Integer connection attempts before success.  
 
-### iOS Events
-These are the event codes that can be presented in the listener `onEventOccurred`, this listener will be invoked exclusively on iOS devices:  
+## Bridgefy SDK Events
+These are the event codes that can be presented in the listener `onEventOccurred`:
+
+### iOS Events  
 **BFEventStartWaiting(value 0)**:Waiting for online validation to start the transmitter.  
 **BFEventStartFinished(value 1)**:The transmitter was started.  
 **BFEventInternetNeeded(value 2)**:The transmitter needs internet to validate license.  
@@ -363,3 +365,7 @@ These are the event codes that can be presented in the listener `onEventOccurred
 **BFEventNearbyPeerDetected(value 6)**:Indicates if a near peer was detected, this event is only invoked if the app is in background mode and this mode is enabled in the BFTransmitter instance.  
 **BFEventBluetoothDisabled(value 7)**:Indicates that the bluetooth interface was disabled or the app doesn't have permissions.  
 **BFEventWifiDisabled(value 8)**:Indicates that the Wi-fi interface was disabled or the app doesn't have permissions.
+### Android Events
+**BFEventStartWaiting(value 0)**:Waiting for online validation to start the Bridgefy SDK.
+**BFEventStartFinished(value 1)**:The Bridgefy was started.  
+**BFEventNearbyPeerDetected(value 6)**:Indicates if a near peer was detected.
