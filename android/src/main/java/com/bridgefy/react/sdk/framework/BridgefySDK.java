@@ -1,5 +1,6 @@
 package com.bridgefy.react.sdk.framework;
 
+import com.bridgefy.react.sdk.utils.BridgefyEvent;
 import com.bridgefy.react.sdk.utils.Utils;
 import com.bridgefy.sdk.client.Bridgefy;
 import com.bridgefy.sdk.client.BridgefyClient;
@@ -36,9 +37,9 @@ public class BridgefySDK extends RegistrationListener{
     {
         this.errorRegisterCallback = error;
         this.successRegisterCallback = success;
+        Utils.onEventOccurred(reactContext, BridgefyEvent.BFEventStartWaiting.getValue(), "Waiting for online validation to start the transmitter.");
         Bridgefy.initialize(reactContext.getApplicationContext(), apiKey, this);
     }
-
 
     public void startSDK(){
 
@@ -48,8 +49,6 @@ public class BridgefySDK extends RegistrationListener{
         );
 
     }
-
-
 
     @Override
     public void onRegistrationSuccessful(BridgefyClient bridgefyClient) {

@@ -1,5 +1,6 @@
 package com.bridgefy.react.sdk.framework;
 
+import com.bridgefy.react.sdk.utils.BridgefyEvent;
 import com.bridgefy.react.sdk.utils.Utils;
 import com.bridgefy.sdk.client.Device;
 import com.bridgefy.sdk.client.Session;
@@ -21,6 +22,7 @@ class BridgefyDevices extends StateListener {
 
     @Override
     public void onStarted() {
+        Utils.onEventOccurred(reactContext, BridgefyEvent.BFEventStartFinished.getValue(), "The Bridgefy was started.");
         Utils.sendEvent(reactContext,"onStarted", Arguments.createMap());
     }
 
@@ -43,6 +45,7 @@ class BridgefyDevices extends StateListener {
         WritableMap writableMap = Utils.getMapForDevice(device);
         writableMap.putString("publicKey", session.getPublicKey());
         Utils.sendEvent(reactContext,"onDeviceConnected", writableMap);
+        Utils.onEventOccurred(reactContext, BridgefyEvent.BFEventNearbyPeerDetected.getValue(), "The Bridgefy was started.");
     }
 
     @Override

@@ -28,6 +28,9 @@ import java.util.Map;
  */
 
 public class Utils {
+
+    private static Object object = new Object();
+
     private Utils(){}
 
     private static final String CONTENT = "content", RECEIVER_ID = "receiver_id", SENDER_ID = "sender_id";
@@ -56,15 +59,16 @@ public class Utils {
         return mapMessage;
     }
 
-    public static synchronized WritableMap getMapForDevice(Device device){
+    public static synchronized WritableMap getMapForDevice(Device device)
+    {
         WritableMap mapDevice = new WritableNativeMap();
         mapDevice.putString("userId",device.getUserId());
         mapDevice.putString("deviceAddress",device.getDeviceAddress());
         mapDevice.putString("deviceName",device.getDeviceName());
         mapDevice.putString("sessionId",device.getSessionId());
-        mapDevice.putString("deviceType",device.getDeviceType().toString());
+        mapDevice.putString("deviceType",device.getAntennaType().toString());
         mapDevice.putDouble("crc",device.getCrc());
-        mapDevice.putInt("retries",device.getRetries());
+        mapDevice.putInt("retries", 3);
         return mapDevice;
     }
 
@@ -77,8 +81,19 @@ public class Utils {
         return mapDeviceProfile;
     }
 
-    public static synchronized void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
+    public static synchronized void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params)
+    {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+    }
+
+    public static void onEventOccurred(ReactContext context, int code, String description)
+    {
+        synchronized (object) {
+            WritableMap writableMap = Arguments.createMap();
+            writableMap.putString("description", description);
+            writableMap.putInt("code", code);
+            sendEvent(context, "onEventOccurred", writableMap);
+        }
     }
 
     public static synchronized Message getMessageFromMap(ReadableMap readableMap)
@@ -91,7 +106,8 @@ public class Utils {
         return message;
     }
 
-    private static HashMap<String, Object> recursivelyDeconstructReadableMap(ReadableMap readableMap) {
+    private static HashMap<String, Object> recursivelyDeconstructReadableMap(ReadableMap readableMap)
+    {
         ReadableMapKeySetIterator iterator = readableMap.keySetIterator();
         HashMap<String, Object> deconstructedMap = new HashMap<>();
         while (iterator.hasNextKey()) {
@@ -124,7 +140,8 @@ public class Utils {
         return deconstructedMap;
     }
 
-    private static List<Object> recursivelyDeconstructReadableArray(ReadableArray readableArray) {
+    private static List<Object> recursivelyDeconstructReadableArray(ReadableArray readableArray)
+    {
         List<Object> deconstructedList = new ArrayList<>(readableArray.size());
         for (int i = 0; i < readableArray.size(); i++) {
             ReadableType indexType = readableArray.getType(i);
@@ -154,7 +171,8 @@ public class Utils {
         return deconstructedList;
     }
 
-    public static WritableArray toWritableArray(Object[] array) {
+    public static WritableArray toWritableArray(Object[] array)
+    {
         WritableArray writableArray = Arguments.createArray();
 
         for (int i = 0; i < array.length; i++) {
@@ -186,7 +204,8 @@ public class Utils {
         return writableArray;
     }
 
-    public static WritableMap toWritableMap(Map<String, Object> map) {
+    public static WritableMap toWritableMap(Map<String, Object> map)
+    {
         WritableMap writableMap = Arguments.createMap();
         Iterator iterator = map.entrySet().iterator();
 
