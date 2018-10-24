@@ -366,6 +366,6 @@ These are the event codes that can be presented in the listener `onEventOccurred
 **BFEventBluetoothDisabled(value 7)**:Indicates that the bluetooth interface was disabled or the app doesn't have permissions.  
 **BFEventWifiDisabled(value 8)**:Indicates that the Wi-fi interface was disabled or the app doesn't have permissions.
 ### Android Events
-**BFEventStartWaiting(value 0)**:Waiting for online validation to start the Bridgefy SDK.
+**BFEventStartWaiting(value 0)**:Waiting for online validation to start the Bridgefy SDK.  
 **BFEventStartFinished(value 1)**:The Bridgefy was started.  
 **BFEventNearbyPeerDetected(value 6)**:Indicates if a near peer was detected.
