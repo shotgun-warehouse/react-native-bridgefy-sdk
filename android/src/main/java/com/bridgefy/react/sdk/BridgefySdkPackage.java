@@ -17,7 +17,6 @@ public class BridgefySdkPackage implements ReactPackage {
       return Arrays.<NativeModule>asList(new BridgefyModule(reactContext));
     }
 
-    @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
