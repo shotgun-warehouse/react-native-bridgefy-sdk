@@ -13,8 +13,7 @@ buildscript {
     }
 }
 
-// apply plugin: 'com.android.library'
-apply plugin: 'android'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 27
