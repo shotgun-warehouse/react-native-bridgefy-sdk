@@ -2,14 +2,11 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.1'
     }
 }
 
@@ -17,36 +14,31 @@ apply plugin: 'com.android.library'
 // apply plugin: 'android'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.0"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
     lintOptions {
         abortOnError false
+        warning 'InvalidPackage'
     }
 }
 
 repositories {
-    mavenCentral()
-
     maven {
         url "http://maven.bridgefy.com/artifactory/libs-release-local"
         artifactUrls = ["http://jcenter.bintray.com/"]
     }
-
-    maven {
-        url 'https://maven.google.com/'
-        name 'Google'
-    }
+    jcenter()
+    google()
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
-    compile 'com.bridgefy:android-sdk:+'
+    implementation "com.facebook.react:react-native:+"
+    implementation 'com.bridgefy:android-sdk:1.1.24'
 }
-  

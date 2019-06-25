@@ -19,17 +19,13 @@ class BridgefyMessages extends MessageListener {
     private ReactContext reactContext;
 
     public BridgefyMessages(ReactContext reactContext) {
+        super();
         this.reactContext = reactContext;
     }
 
     @Override
     public void onMessageReceived(Message message) {
         Utils.sendEvent(reactContext,"onMessageReceived", Utils.getMapForMessage(message));
-    }
-
-    @Override
-    public void onMessageSent(Message message) {
-        Utils.sendEvent(reactContext,"onMessageSent", Utils.getMapForMessage(message));
     }
 
     @Override

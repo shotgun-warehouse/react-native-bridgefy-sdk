@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class Utils {
 
-    private static Object object = new Object();
+    private static final Object object = new Object();
 
     private Utils(){}
 
@@ -54,8 +54,9 @@ public class Utils {
         mapMessage.putString("senderId", message.getSenderId());
         mapMessage.putString("uuid", message.getUuid());
         mapMessage.putDouble("dateSent", message.getDateSent());
-        if (message.getContent() != null)
+        if (message.getContent() != null) {
             mapMessage.putMap("content", toWritableMap(message.getContent()));
+        }
         return mapMessage;
     }
 
@@ -72,7 +73,7 @@ public class Utils {
         return mapDevice;
     }
 
-    public static synchronized WritableMap getDeviceProfile(BridgefyClient bridgefyClient)
+    private static synchronized WritableMap getDeviceProfile(BridgefyClient bridgefyClient)
     {
         DeviceProfile deviceProfile = bridgefyClient.getDeviceProfile();
         WritableMap mapDeviceProfile = new WritableNativeMap();
@@ -98,12 +99,11 @@ public class Utils {
 
     public static synchronized Message getMessageFromMap(ReadableMap readableMap)
     {
-        HashMap content = recursivelyDeconstructReadableMap(readableMap.getMap(CONTENT));
-        Message message = new Message(content,
+        HashMap<String, Object> content = recursivelyDeconstructReadableMap(readableMap.getMap(CONTENT));
+        return new Message(content,
                 readableMap.hasKey(RECEIVER_ID)?readableMap.getString(RECEIVER_ID):"",
                 readableMap.hasKey(SENDER_ID)?readableMap.getString(SENDER_ID):""
         );
-        return message;
     }
 
     private static HashMap<String, Object> recursivelyDeconstructReadableMap(ReadableMap readableMap)
@@ -171,11 +171,11 @@ public class Utils {
         return deconstructedList;
     }
 
-    public static WritableArray toWritableArray(Object[] array)
+    private static WritableArray toWritableArray(Object[] array)
     {
         WritableArray writableArray = Arguments.createArray();
 
-        for (int i = 0; i < array.length; i++) {
+        for(int i = 0; i < array.length; i++) {
             Object value = array[i];
 
             if (value == null) {
@@ -196,7 +196,8 @@ public class Utils {
             if (value instanceof Map) {
                 writableArray.pushMap(toWritableMap((Map<String, Object>) value));
             }
-            if (value.getClass().isArray()) {
+
+            if (value != null && value.getClass().isArray()) {
                 writableArray.pushArray(toWritableArray((Object[]) value));
             }
         }
@@ -204,29 +205,28 @@ public class Utils {
         return writableArray;
     }
 
-    public static WritableMap toWritableMap(Map<String, Object> map)
-    {
+    private static WritableMap toWritableMap(Map<String, Object> map) {
         WritableMap writableMap = Arguments.createMap();
-        Iterator iterator = map.entrySet().iterator();
+        Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
 
         while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry)iterator.next();
+            Map.Entry<String, Object> pair = iterator.next();
             Object value = pair.getValue();
 
             if (value == null) {
-                writableMap.putNull((String) pair.getKey());
+                writableMap.putNull(pair.getKey());
             } else if (value instanceof Boolean) {
-                writableMap.putBoolean((String) pair.getKey(), (Boolean) value);
+                writableMap.putBoolean(pair.getKey(), (Boolean) value);
             } else if (value instanceof Double) {
-                writableMap.putDouble((String) pair.getKey(), (Double) value);
+                writableMap.putDouble(pair.getKey(), (Double) value);
             } else if (value instanceof Integer) {
-                writableMap.putInt((String) pair.getKey(), (Integer) value);
+                writableMap.putInt(pair.getKey(), (Integer) value);
             } else if (value instanceof String) {
-                writableMap.putString((String) pair.getKey(), (String) value);
+                writableMap.putString(pair.getKey(), (String) value);
             } else if (value instanceof Map) {
-                writableMap.putMap((String) pair.getKey(), toWritableMap((Map<String, Object>) value));
+                writableMap.putMap(pair.getKey(), toWritableMap((Map<String, Object>) value));
             } else if (value.getClass() != null && value.getClass().isArray()) {
-                writableMap.putArray((String) pair.getKey(), toWritableArray((Object[]) value));
+                writableMap.putArray(pair.getKey(), toWritableArray((Object[]) value));
             }
 
             iterator.remove();
