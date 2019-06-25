@@ -3,12 +3,13 @@ This repository contains a module for [React Native](https://facebook.github.io/
 
 ## Install on existing project
 
-**Note: **This section explains how to add Bridgefy to an existing project with native code. If you don't know how to create a Native React project with native code, you can check it [here](https://facebook.github.io/react-native/docs/getting-started.html), under the tab **Building Projects with Native Code**.  
+**Note:**
+This section explains how to add Bridgefy to an existing project with native code. If you don't know how to create a Native React project with native code, you can check it [here](https://facebook.github.io/react-native/docs/getting-started.html), under the tab **Building Projects with Native Code**.  
 
 Let's suppose your project name is `AwesomeProject`, go to the root directory of the project and run the following command:
 
 ```
-npm install --save npm install --save git+ssh://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git
+npm install --save git+https://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git
 ```
 
 It will download and install the bridgefy module, don't forget the parameter `--save` if you want to save the dependency in your `package.json`, so you can install/update Bridgefy easier in the future.  
