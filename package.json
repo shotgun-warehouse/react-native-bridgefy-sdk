@@ -1,37 +1,9 @@
 {
-  "_args": [
-    [
-      "../react-native-bridgefy-sdk",
-      "/Users/danno/Desktop/react/ChatSample"
-    ]
-  ],
-  "_from": "../react-native-bridgefy-sdk",
-  "_id": "react-native-bridgefy-sdk@0.0.1",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/react-native-bridgefy-sdk",
-  "_phantomChildren": {},
-  "_requested": {
-    "name": null,
-    "raw": "../react-native-bridgefy-sdk",
-    "rawSpec": "../react-native-bridgefy-sdk",
-    "scope": null,
-    "spec": "/Users/danno/Desktop/react/react-native-bridgefy-sdk",
-    "type": "directory"
-  },
-  "_requiredBy": [
-    "#USER"
-  ],
-  "_resolved": "file:../react-native-bridgefy-sdk",
-  "_shasum": "f76189b925a5f644bcfd4040b8e7615e6949e4dc",
-  "_shrinkwrap": null,
-  "_spec": "../react-native-bridgefy-sdk",
-  "_where": "/Users/danno/Desktop/react/ChatSample",
   "author": {
-    "name": "Gilberto Julian de la Orta Hernandez @kekoyde"
+    "name": "Bridgefy Development Team"
   },
   "bugs": {
-    "url": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdkissues"
+    "url": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdk/issues"
   },
   "dependencies": {},
   "description": "Import Bridgefy React Native modules that can be installed through NPM and easily be used in production.",
@@ -40,11 +12,15 @@
   "homepage": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdk",
   "keywords": [
     "react-native",
+    "react-native-bridgefy",
+    "bridgefy",
     "android",
-    "library"
+    "ios",
+    "mesh",
+    "offline"
   ],
-  "license": "Unlicense",
-  "name": "react-native-bridgefy-sdk",
+  "license": "MIT",
+  "name": "react-native-bridgefy",
   "optionalDependencies": {},
   "peerDependencies": {
     "react-native": ">= 0.49.3"
