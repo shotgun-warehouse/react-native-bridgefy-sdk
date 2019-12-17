@@ -20,7 +20,7 @@
     "offline"
   ],
   "license": "MIT",
-  "name": "react-native-bridgefy",
+  "name": "react-native-bridgefy-sdk",
   "optionalDependencies": {},
   "peerDependencies": {
     "react-native": ">= 0.49.3"
