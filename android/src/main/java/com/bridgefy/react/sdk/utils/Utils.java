@@ -2,6 +2,7 @@ package com.bridgefy.react.sdk.utils;
 
 import android.support.annotation.Nullable;
 
+import com.bridgefy.sdk.client.Bridgefy;
 import com.bridgefy.sdk.client.BridgefyClient;
 import com.bridgefy.sdk.client.Device;
 import com.bridgefy.sdk.client.DeviceProfile;
@@ -102,7 +103,7 @@ public class Utils {
         HashMap<String, Object> content = recursivelyDeconstructReadableMap(readableMap.getMap(CONTENT));
         return new Message(content,
                 readableMap.hasKey(RECEIVER_ID)?readableMap.getString(RECEIVER_ID):"",
-                readableMap.hasKey(SENDER_ID)?readableMap.getString(SENDER_ID):""
+                Bridgefy.getInstance().getBridgefyClient().getUserUuid()
         );
     }
 

@@ -52,4 +52,14 @@ class BridgefyDevices extends StateListener {
     public void onDeviceLost(Device device) {
         Utils.sendEvent(reactContext,"onDeviceLost", Utils.getMapForDevice(device));
     }
+
+    @Override
+    public void onDeviceDetected(Device device) {
+
+    }
+
+    @Override
+    public void onDeviceUnavailable(Device device) {
+
+    }
 }

@@ -1,7 +1,5 @@
 package com.bridgefy.react.sdk.framework;
 
-import android.util.Log;
-
 import com.bridgefy.react.sdk.utils.Utils;
 import com.bridgefy.sdk.client.Message;
 import com.bridgefy.sdk.client.MessageListener;
@@ -9,7 +7,6 @@ import com.bridgefy.sdk.framework.exceptions.MessageException;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.google.gson.Gson;
 
 /**
  * @author kekoyde on 6/9/17.
