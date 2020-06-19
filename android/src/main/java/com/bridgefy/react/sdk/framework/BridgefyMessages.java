@@ -49,7 +49,13 @@ class BridgefyMessages extends MessageListener {
 
     @Override
     public void onBroadcastMessageReceived(Message message) {
-        Log.e("BridgefyMessages", "onBroadcastMessageReceived: " + new Gson().toJson(message));
         Utils.sendEvent(reactContext,"onBroadcastMessageReceived", Utils.getMapForMessage(message));
+    }
+
+    @Override
+    public void onMessageSent(String messageId) {
+        WritableMap writableMap = Arguments.createMap();
+        writableMap.putString("uuid", messageId);
+        Utils.sendEvent(reactContext, "onMessageSent", writableMap);
     }
 }

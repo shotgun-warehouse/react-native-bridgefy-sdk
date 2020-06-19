@@ -50,6 +50,10 @@ public class BridgefySDK extends RegistrationListener{
 
     }
 
+    public void stopSDK() {
+        Bridgefy.stop();
+    }
+
     @Override
     public void onRegistrationSuccessful(BridgefyClient bridgefyClient) {
         successRegisterCallback.invoke(Utils.getBridgefyClient(bridgefyClient));

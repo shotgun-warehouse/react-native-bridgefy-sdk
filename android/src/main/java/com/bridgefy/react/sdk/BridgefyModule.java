@@ -38,6 +38,12 @@ public class BridgefyModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void stop()
+  {
+    bridgefySDK.stopSDK();
+  }
+
+  @ReactMethod
   public void sendMessage(ReadableMap message)
   {
     bridgefySDK.sendMessage(Utils.getMessageFromMap(message));
