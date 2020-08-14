@@ -1,13 +1,18 @@
 //
-//  Bridgefy.m
+//  RNBridgefy.m
 //  AwesomeProject
 //
 //  Created by Danno on 6/15/17.
 //  Copyright © 2017 Facebook. All rights reserved.
 //
 
-#import "Bridgefy.h"
+#import "RNBridgefy.h"
 #import <BFTransmitter/BFTransmitter.h>
+
+#import <React/RCTConvert.h>
+#import <React/RCTLog.h>
+#import <React/RCTUtils.h>
+#import <React/RCTBridge.h>
 
 #ifndef BRIDGEFY_E
 #define BRIDGEFY_E
@@ -24,7 +29,7 @@
 #define kEventOccurred @"onEventOccurred"
 #endif
 
-@interface Bridgefy()<BFTransmitterDelegate> {
+@interface RNBridgefy()<BFTransmitterDelegate> {
 }
 
 @property (nonatomic, retain) BFTransmitter * transmitter;
@@ -32,23 +37,23 @@
 
 @end
 
-@implementation Bridgefy
+@implementation RNBridgefy
 RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents {
     return @[
-             kMessageReceived,
-             kMessageSent,
-             kMessageReceivedError,
-             kMessageSentError,
-             kBroadcastReceived,
-             kStarted,
-             kStartedError,
-             kStopped,
-             kDeviceConnected,
-             kDeviceDisconnected,
-             kEventOccurred
-             ];
+            kMessageReceived,
+            kMessageSent,
+            kMessageReceivedError,
+            kMessageSentError,
+            kBroadcastReceived,
+            kStarted,
+            kStartedError,
+            kStopped,
+            kDeviceConnected,
+            kDeviceDisconnected,
+            kEventOccurred
+        ];
 }
 
 RCT_REMAP_METHOD(init, startWithApiKey:(NSString *)apiKey errorCallBack:(RCTResponseSenderBlock)errorCallBack successCallback:(RCTResponseSenderBlock)successCallback) {
@@ -80,7 +85,7 @@ RCT_EXPORT_METHOD(start) {
 
 RCT_EXPORT_METHOD(stop) {
     [self.transmitter stop];
-    [self.bridge.eventDispatcher sendDeviceEventWithName:kStopped body:@{}];
+    [self sendEventWithName:kStopped body:@{}];
 }
 
 RCT_REMAP_METHOD(sendMessage, sendMessage:(NSDictionary *) message) {
@@ -131,7 +136,7 @@ RCT_REMAP_METHOD(sendBroadcastMessage, sendBroadcastMessage:(NSDictionary *) mes
                                      @"description": error.localizedDescription,
                                      @"origin": createdMessage
                                      };
-        [self.bridge.eventDispatcher sendDeviceEventWithName:kMessageSentError body:errorDict];
+        [self sendEventWithName:kMessageSentError body:errorDict];
         
     }
     
@@ -206,7 +211,7 @@ RCT_REMAP_METHOD(sendBroadcastMessage, sendBroadcastMessage:(NSDictionary *) mes
     if (message == nil) {
         return;
     }
-    [self.bridge.eventDispatcher sendDeviceEventWithName:kMessageSent body:message];
+    [self sendEventWithName:kMessageSent body:message];
     [self.transitMessages removeObjectForKey:packetID];
 }
 
@@ -220,7 +225,7 @@ RCT_REMAP_METHOD(sendBroadcastMessage, sendBroadcastMessage:(NSDictionary *) mes
                                  @"description": error.localizedDescription,
                                  @"origin": message
                                  };
-    [self.bridge.eventDispatcher sendDeviceEventWithName:kMessageSentError body:errorDict];
+    [self sendEventWithName:kMessageSentError body:errorDict];
     [self.transitMessages removeObjectForKey:packetID];
 }
 
@@ -247,13 +252,13 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
                                                     sender:user
                                                   receiver:nil
                                                       uuid:packetID];
-        [self.bridge.eventDispatcher sendDeviceEventWithName:kBroadcastReceived body:message];
+        [self sendEventWithName:kBroadcastReceived body:message];
     } else {
         message = [self createMessageDictionaryWithPayload:dictionary
                                                     sender:user
                                                   receiver: transmitter.currentUser
                                                       uuid:packetID];
-        [self.bridge.eventDispatcher sendDeviceEventWithName:kMessageReceived body:message];
+        [self sendEventWithName:kMessageReceived body:message];
     }
 }
 
@@ -266,7 +271,7 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
     NSDictionary * userDict = @{
                                 @"userId": user
                                 };
-    [self.bridge.eventDispatcher sendDeviceEventWithName:kDeviceDisconnected body:userDict];
+    [self sendEventWithName:kDeviceDisconnected body:userDict];
 }
 
 - (void)transmitter:(BFTransmitter *)transmitter didFailAtStartWithError:(NSError *)error {
@@ -275,18 +280,18 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
                                  @"code": @(error.code),
                                  @"message": error.localizedDescription
                                  };
-    [self.bridge.eventDispatcher sendDeviceEventWithName:kStartedError body:errorDict];
+    [self sendEventWithName:kStartedError body:errorDict];
 }
 
 - (void)transmitter:(BFTransmitter *)transmitter didOccurEvent:(BFEvent)event description:(NSString *)description {
     if (event == BFEventStartFinished ) {
-        [self.bridge.eventDispatcher sendDeviceEventWithName:kStarted body:@{}];
+        [self sendEventWithName:kStarted body:@{}];
     } else {
         NSDictionary * eventDict = @{
                                      @"code": @(event),
                                      @"description": description
                                      };
-        [self.bridge.eventDispatcher sendDeviceEventWithName:kEventOccurred body:eventDict];
+        [self sendEventWithName:kEventOccurred body:eventDict];
     }
 }
 
@@ -294,7 +299,7 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
     NSDictionary * userDict = @{
                                 @"userId": user
                                 };
-    [self.bridge.eventDispatcher sendDeviceEventWithName:kDeviceConnected body:userDict];
+    [self sendEventWithName:kDeviceConnected body:userDict];
 }
 
 - (BOOL)transmitter:(BFTransmitter *)transmitter shouldConnectSecurelyWithUser:(NSString *)user {
@@ -309,6 +314,23 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
 - (void)transmitterDidDetectAnotherInterfaceStarted:(BFTransmitter *)transmitter {
     //TODO: Implement
     
+}
+
+- (void)transmitter:(nonnull BFTransmitter *)transmitter didDetectNearbyUser:(nonnull NSString *)user {
+//    [self sendEventWithName:kDeviceConnected body:userDict];
+    NSLog(@"didDetectNearbyUser");
+}
+
+
+- (void)transmitter:(nonnull BFTransmitter *)transmitter didFailConnectingToUser:(nonnull NSString *)user error:(nonnull NSError *)error {
+//    [self sendEventWithName:kDeviceConnected body:userDict];
+    NSLog(@"didFailConnectingToUser");
+}
+
+
+- (void)transmitter:(nonnull BFTransmitter *)transmitter userIsNotAvailable:(nonnull NSString *)user {
+//    [self sendEventWithName:kDeviceConnected body:userDict];
+    NSLog(@"userIsNotAvailable");
 }
 
 @end

@@ -11,51 +11,39 @@ Let's suppose your project name is `AwesomeProject`, go to the root directory of
 ```
 npm install --save git+https://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git
 ```
+or 
+```
+yarn add git+https://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git
+```
 
-It will download and install the bridgefy module, don't forget the parameter `--save` if you want to save the dependency in your `package.json`, so you can install/update Bridgefy easier in the future.  
+It will download and install the bridgefy module.  
 At this point you already have the module, but in order to be able to use it, you will need to make some configurations for every platform.
 
 ### Android install
 
-First, open the project in Android Studio, this is located in `AwesomeProject/android`.  
-Once the project is open, you will need to indicate where the module is installed, to do this open the file  `android/settings.gradle` and add the following code:
-```xml
-include ':react-native-bridgefy-sdk'
-project(':react-native-bridgefy-sdk').projectDir = new File(settingsDir, '../node_modules/react-native-bridgefy-sdk/android'
-```
-After this you will need to indicate the maven repository to download the native SDK and add the React Native interface as a dependency. To do this open the file `android/app/build.gradle` and add the followind code:
+We assume you are using React Native >= 0.60.x (supports auto linking).
 
+Please follow those steps to have a working Android setup:
+
+* Edit your `android/build.gradle` file and ensure your are targetting Android SDK >= 21:
 ```xml
- repositories {
-             maven {
-                 url "http://maven.bridgefy.com/artifactory/libs-release-local"
-                 artifactUrls = ["http://jcenter.bintray.com/"]
-             }
- }
- dependencies {
-                compile project(':react-native-bridgefy-sdk')
+buildscript {
+    ext {
+        minSdkVersion = 21
+        // ...
+```
+
+* Edit your `android/app/build.gradle` file to add the followind code:
+```xml
+repositories {
+  maven {
+    url "http://maven.bridgefy.com/artifactory/libs-release-local"
+    artifactUrls = ["http://jcenter.bintray.com/"]
+  }
 }
 ```
 
-Open the main activity (`android/app/src/main/java/**/MainApplication.java`) and add the following segments of code:
-
-```java
-  ...
-  // Import the module
-  import com.bridgefy.react.sdk.BridgefySdkPackage;
-  ...
-  // Add this method in the MainApplication class to indicate the packages to use.
-  @Override
-  protected List<ReactPackage> getPackages() {
-            return Arrays.<ReactPackage>asList(
-                  new MainReactPackage(),
-                  new BridgefySdkPackage() // add this for react-native-bridgefy-sdk
-            );
-          }
-  ...
-```
-
-As final step, add the needed permissions by Bridgefy to work in the file `AndroidManifest.xml`:  
+* Then add the following permissions in your `AndroidManifest.xml` file:  
 ```java
 android.permission.BLUETOOTH
 android.permission.BLUETOOTH_ADMIN
@@ -70,28 +58,13 @@ android.permission.ACCESS_COARSE_LOCATION
 
 ### iOS Install
 
-First, go to the official [Bridgefy iOS repository](https://bitbucket.org/bridgefy/bridgefy-ios-dist) to download the last version of `BFTransmitter.framewok`.
+Again, we assume you are using React Native >= 0.60 (with auto linking).
 
-Once you have the framework file, move to `AwesomeProject/ios` and copy there the downloaded file. Just as is indicated in the following image:  
+* Run `cd ios && pod install && cd ..`,
 
-![Paste framework file](img/paste.png)  
+* Edit your project's Info.plist file and add a entry for `NSBluetoothAlwaysUsageDescription`
 
-Next, move to the root directory (`AwesomeProject`) and run there the following command to link the interface module to the project:
-
-```
-react-native link
-```
-Open the XCode project, you will need to add `BFTransmitter.framework` to "Embedded binaries", you can do this by dragging the file like is shown in the following image:  
-
-![Add framework](img/embedded_binaries.png)
-  
-Finally, select a Development team for the target `AwesomeProject` and  `AwesomeProjectTests` like is shown in the following images:  
-
-![Team](img/select_team.png)  
-
-![Tests team](img/select_team_tests.png)  
-
-At this point you can run the application directly from XCode using a physical device.
+* In case you need to use Bridgefy in background mode, add both "BLE peripheral" and "BLE accessory" capabilities in XCode.
 
 ## Usage
 
@@ -102,24 +75,26 @@ First, make sure you have an API KEY to use the framework, if you don't have it,
 To start to work with the framework in Javascript, you will have to import it to the `.js` file you will be working, so add the following code:
 
 ```javascript
-  import Bridgefy from 'react-native-bridgefy-sdk'
+  import BridgefySdk from 'react-native-bridgefy-sdk'
   import {
       ...
-      DeviceEventEmitter,
+      NativeEventEmitter,
       ...
     } from 'react-native';
+  
+  const bridgefyEmitter = new NativeEventEmitter(BridgefySdk);
 ```  
 Before any use, you will need to initialize the Bridgefy engine, you can do it with the following code, just change the text `BRIDGEFY_API_KEY` with your actual API_KEY:  
 
 ```javascript
-  Bridgefy.init("BRIDGEFY_APY_KEY", 
+  BridgefySdk.init("BRIDGEFY_APY_KEY", 
     (errorCode, message)=>{
-                console.log(errorCode + ":" + message);
-                },
+      console.log(errorCode + ":" + message);
+    },
     (client) => {
-                console.log(client);
-                }
-    );
+      console.log(client);
+    }
+  );
 ```
 If the initialization fails you will get an `errorCode` (Integer) and a `message` (string) that indicates the reason of the failute. If the initialization is successful you will get a `client` dictionary, that is described in the Appendix section.  
 
@@ -127,11 +102,11 @@ If the initialization fails you will get an `errorCode` (Integer) and a `message
 
 To keep resources, you will need to start the transmitter before use it, this is the code to do it:
 ```javascript
-BridgefySDK.start();
+BridgefySdk.start();
 ```
 Once you finished using the service you can stop it by using the following code:
 ```javascript
-BridgefySDK.stop();
+BridgefySdk.stop();
 ```
 
 ### Sending messages
@@ -146,7 +121,7 @@ You can send a message to an specific user, you need the identifier for that use
                  },
                  receiver_id: "A_STRING_USER_IDENTIFIER",
                };
- Bridgefy.sendMessage(message);
+ BridgefySdk.sendMessage(message);
 ```
 You create a dictionary with the fields `content` and `receiver_id`. `content` can contain whatever you want, even another dictionary, as long the data types you use comply with the ones supported by JSON format. `receiver_id` is the identifier for the receiver user.  
 
@@ -158,7 +133,7 @@ You can also send a broadcast message, a broadcast message is a message that wil
                           message:"Hello world!!"
                  }
                 };
- Bridgefy.sendBroadcastMessage(message);
+ BridgefySdk.sendBroadcastMessage(message);
 ```
 The dictionary just contains the field `content`, whose structure was explained before. Also note that the method invoked is `sendBroadcastMessage`.
 
@@ -174,21 +149,21 @@ You will need to implement some listeners in order to receive messages, detect n
 
     // This event is launched when a message has been received, 
     // the `message` dictionary structure is explained in the appendix
-    DeviceEventEmitter.addListener('onMessageReceived', (message)=> {
+    bridgefyEmitter.addListener(('onMessageReceived', (message)=> {
                         console.log('onMessageReceived: '+ JSON.stringify(message));
                       }
     );
 
     // This event is launched when a broadcast message has been received, the structure 
     // of the dictionary received is explained in the appendix.
-    DeviceEventEmitter.addListener('onBroadcastMessageReceived', (message)=> {
+    bridgefyEmitter.addListener(('onBroadcastMessageReceived', (message)=> {
                         console.log('onMessageReceived: '+ JSON.stringify(message));
                       }
     );
 
     // This event is launched when a message could not be sent, it receives an error
     // whose structure will be explained in the appendix
-    DeviceEventEmitter.addListener('onMessageFailed', (error)=> {
+    bridgefyEmitter.addListener(('onMessageFailed', (error)=> {
                         console.log('onMessageFailed: '+ error);
 
                         console.log('code: ' + error.conde); // error code
@@ -200,7 +175,7 @@ You will need to implement some listeners in order to receive messages, detect n
 
     // This event is launched when a message was sent, contains the message
     // itself, and the structure of message is explained in the appendix.
-    DeviceEventEmitter.addListener('onMessageSent', (message)=> {
+    bridgefyEmitter.addListener(('onMessageSent', (message)=> {
                         console.log('onMessageSent: '+ JSON.stringify(message));
                       }
     );
@@ -208,7 +183,7 @@ You will need to implement some listeners in order to receive messages, detect n
     // This event is launched when a message was received but it contains errors, 
     // the structure for this kind of error is explained in the appendix.
     // This method is launched exclusively on Android.
-    DeviceEventEmitter.addListener('onMessageReceivedException', (error)=> {
+    bridgefyEmitter.addListener(('onMessageReceivedException', (error)=> {
       
                         console.log('onMessageReceivedException: '+ error);
                         console.log('sender: ' + error.sender); // User ID of the sender
@@ -225,14 +200,14 @@ You will need to implement some listeners in order to receive messages, detect n
 
     // This event is launched when the service has been started successfully, it receives
     // a device dictionary that will be descripted in the appendix.
-    DeviceEventEmitter.addListener('onStarted', (device)=> {
+    bridgefyEmitter.addListener(('onStarted', (device)=> {
                         // For now, device is an empty dictionary
                       }
     );
 
     // This event is launched when the Bridgefy service fails on the start, it receives
     // a dictionary (error) that will be explained in the appendix.
-    DeviceEventEmitter.addListener('onStartError', (error)=> {
+    bridgefyEmitter.addListener(('onStartError', (error)=> {
                         console.log('onStartError: '+ error);
                         console.log('code: ' + error.conde); // error code
                         console.log('description' + error.description); // Error cause 
@@ -240,27 +215,27 @@ You will need to implement some listeners in order to receive messages, detect n
     );
 
     // This event is launched when the Bridgefy service stops.
-    DeviceEventEmitter.addListener('onStopped', ()=> {
+    bridgefyEmitter.addListener(('onStopped', ()=> {
                         console.log('onStopped');
                       }
     );
 
     // This method is launched when a device is nearby and has established connection with the local user.
     // It receives a device dictionary.
-    DeviceEventEmitter.addListener('onDeviceConnected', (device)=> {
+    bridgefyEmitter.addListener(('onDeviceConnected', (device)=> {
                         BridgefyClient.deviceList.push(device);
                         console.log('onDeviceConnected: ' + device.DeviceName + " size: " + BridgefyClient.deviceList.length);
                     }
     );
     // This method is launched when there is a disconnection of a user.
-    DeviceEventEmitter.addListener('onDeviceLost', (device)=> {
+    bridgefyEmitter.addListener(('onDeviceLost', (device)=> {
                         console.log('onDeviceLost: ' + device);
                       }
     );
 
     // This is method is launched exclusively on iOS devices, notifies about certain actions like when
     // the bluetooth interface  needs to be activated, when internet is needed and others.
-    DeviceEventEmitter.addListener('onEventOccurred', (event)=> {
+    bridgefyEmitter.addListener(('onEventOccurred', (event)=> {
                         console.log('Event code: ' + event.code + ' Description: ' + event.description);
                       }
     );

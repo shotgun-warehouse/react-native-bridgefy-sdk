@@ -1,6 +1,6 @@
 
 import { NativeModules } from 'react-native';
 
-const { Bridgefy } = NativeModules;
+const { RNBridgefy } = NativeModules;
 
-export default Bridgefy;
+export default RNBridgefy;
