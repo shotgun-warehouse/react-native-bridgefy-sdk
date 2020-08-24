@@ -6,6 +6,7 @@ import com.bridgefy.sdk.client.Bridgefy;
 import com.bridgefy.sdk.client.BridgefyClient;
 import com.bridgefy.sdk.client.Message;
 import com.bridgefy.sdk.client.RegistrationListener;
+import com.bridgefy.sdk.client.Config;
 // import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactContext;
