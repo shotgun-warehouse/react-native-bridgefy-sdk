@@ -6,8 +6,11 @@ import com.bridgefy.sdk.client.Bridgefy;
 import com.bridgefy.sdk.client.BridgefyClient;
 import com.bridgefy.sdk.client.Message;
 import com.bridgefy.sdk.client.RegistrationListener;
-import com.facebook.react.bridge.Callback;
+// import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactContext;
+
+import android.util.Log;
 
 /**
  * @author kekoyde on 6/9/17.
@@ -16,8 +19,7 @@ import com.facebook.react.bridge.ReactContext;
 public class BridgefySDK extends RegistrationListener{
 
     private ReactContext reactContext;
-    private Callback errorRegisterCallback;
-    private Callback successRegisterCallback;
+    private Promise initializePromise;
 
     public BridgefySDK(ReactContext reactContext){
         this.reactContext = reactContext;
@@ -33,21 +35,28 @@ public class BridgefySDK extends RegistrationListener{
         Bridgefy.sendBroadcastMessage(message);
     }
 
-    public void initialize(String apiKey, Callback error, Callback success)
+    public void initialize(String apiKey, Promise promise)
     {
-        this.errorRegisterCallback = error;
-        this.successRegisterCallback = success;
+        this.initializePromise = promise;
+        // this.errorRegisterCallback = error;
+        // this.successRegisterCallback = success;
         Utils.onEventOccurred(reactContext, BridgefyEvent.BFEventStartWaiting.getValue(), "Waiting for online validation to start the transmitter.");
         Bridgefy.initialize(reactContext.getApplicationContext(), apiKey, this);
     }
 
-    public void startSDK(){
+    public void startSDK(Promise promise){
+        Config.Builder builder = new Config.Builder();
+
+        builder.setAutoConnect(true)                                       // Determinate on-demand / auto connect
+        // builder.setEngineProfile(BFEngineProfile.BFConfigProfileLongReach)  // Engine Profile
+        builder.setEnergyProfile(BFEnergyProfile.HIGH_PERFORMANCE)          // Energy Profile 
+        builder.setEncryption(false); 
 
         Bridgefy.start(
-                new BridgefyMessages(reactContext),
-                new BridgefyDevices(reactContext)
+            new BridgefyMessages(reactContext),
+            new BridgefyDevices(reactContext, promise),
+            builder.build()
         );
-
     }
 
     public void stopSDK() {
@@ -56,11 +65,13 @@ public class BridgefySDK extends RegistrationListener{
 
     @Override
     public void onRegistrationSuccessful(BridgefyClient bridgefyClient) {
-        successRegisterCallback.invoke(Utils.getBridgefyClient(bridgefyClient));
+        // successRegisterCallback.invoke(Utils.getBridgefyClient(bridgefyClient));
+        this.initializePromise.resolve(Utils.getBridgefyClient(bridgefyClient));
     }
 
     @Override
     public void onRegistrationFailed(int errorCode, String message) {
-        errorRegisterCallback.invoke(errorCode, message);
+        // errorRegisterCallback.invoke(errorCode, message);
+        this.initializePromise.reject(String.valueOf(errorCode), message);
     }
 }

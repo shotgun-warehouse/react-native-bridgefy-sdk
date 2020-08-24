@@ -3,11 +3,15 @@ package com.bridgefy.react.sdk;
 
 import com.bridgefy.react.sdk.framework.BridgefySDK;
 import com.bridgefy.react.sdk.utils.Utils;
-import com.facebook.react.bridge.Callback;
+// import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+
+import com.facebook.react.bridge.Promise;
+
+import android.util.Log;
 
 public class BridgefyModule extends ReactContextBaseJavaModule {
 
@@ -26,15 +30,17 @@ public class BridgefyModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void init(String apiKey, Callback errorCallback, Callback successCallback)
+  public void init(String apiKey, Promise promise)
   {
-    bridgefySDK.initialize(apiKey,  errorCallback, successCallback);
+    bridgefySDK.initialize(apiKey, promise);
   }
 
   @ReactMethod
-  public void start()
+  public void start(Promise promise)
   {
-    bridgefySDK.startSDK();
+    bridgefySDK.startSDK(promise);
+
+    // FIXME, MUST BE A PROMISE
   }
 
   @ReactMethod

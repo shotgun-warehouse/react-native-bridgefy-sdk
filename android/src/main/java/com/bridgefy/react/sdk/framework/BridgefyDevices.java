@@ -8,6 +8,9 @@ import com.bridgefy.sdk.client.StateListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Promise;
+
+import android.util.Log;
 
 /**
  * @author kekoyde on 6/9/17.
@@ -15,33 +18,51 @@ import com.facebook.react.bridge.WritableMap;
 
 class BridgefyDevices extends StateListener {
     private ReactContext reactContext;
+    private Promise startPromise;
 
-    public BridgefyDevices(ReactContext reactContext) {
+    private static final String TAG = "BridgefyDevices";
+
+    public BridgefyDevices(ReactContext reactContext, Promise promise) {
+        Log.v(TAG, "new BridgefyDevices");
         this.reactContext = reactContext;
+        this.startPromise = promise;
     }
 
     @Override
     public void onStarted() {
+        Log.v(TAG, "onStarted");
         Utils.onEventOccurred(reactContext, BridgefyEvent.BFEventStartFinished.getValue(), "The Bridgefy was started.");
-        Utils.sendEvent(reactContext,"onStarted", Arguments.createMap());
+        Utils.sendEvent(reactContext,"onStarted", Arguments.createMap()); // should we keep it?
+        if (this.startPromise != null) {
+            this.startPromise.resolve(null);
+        }
     }
 
     @Override
     public void onStartError(String message, int errorCode) {
+        Log.v(TAG, "onStartError");
+        // should we keept that?
         WritableMap writableMap = Arguments.createMap();
         writableMap.putMap("message", Arguments.createMap());
         writableMap.putString("description", message);
         writableMap.putInt("code", errorCode);
         Utils.sendEvent(reactContext, "onStartError", writableMap);
+        // ??
+
+        if (this.startPromise != null) {
+            this.startPromise.reject(String.valueOf(errorCode),message);
+        }
     }
 
     @Override
     public void onStopped() {
+        Log.v(TAG, "onStopped");
         Utils.sendEvent(reactContext,"onStopped", Arguments.createMap());
     }
 
     @Override
     public void onDeviceConnected(Device device, Session session) {
+        Log.v(TAG, "onDeviceConnected");
         WritableMap writableMap = Utils.getMapForDevice(device);
         writableMap.putString("publicKey", session.getPublicKey());
         Utils.sendEvent(reactContext,"onDeviceConnected", writableMap);
@@ -50,16 +71,19 @@ class BridgefyDevices extends StateListener {
 
     @Override
     public void onDeviceLost(Device device) {
+        Log.v(TAG, "onDeviceLost");
         Utils.sendEvent(reactContext,"onDeviceLost", Utils.getMapForDevice(device));
     }
 
     @Override
     public void onDeviceDetected(Device device) {
+        Log.v(TAG, "onDeviceDetected");
 
     }
 
     @Override
     public void onDeviceUnavailable(Device device) {
+        Log.v(TAG, "onDeviceUnavailable");
 
     }
 }
