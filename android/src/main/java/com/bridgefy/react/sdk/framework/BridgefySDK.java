@@ -47,9 +47,9 @@ public class BridgefySDK extends RegistrationListener{
     public void startSDK(Promise promise){
         Config.Builder builder = new Config.Builder();
 
-        builder.setAutoConnect(true)                                       // Determinate on-demand / auto connect
+        builder.setAutoConnect(true);                                      // Determinate on-demand / auto connect
         // builder.setEngineProfile(BFEngineProfile.BFConfigProfileLongReach)  // Engine Profile
-        builder.setEnergyProfile(BFEnergyProfile.HIGH_PERFORMANCE)          // Energy Profile 
+        builder.setEnergyProfile(BFEnergyProfile.HIGH_PERFORMANCE);          // Energy Profile 
         builder.setEncryption(false); 
 
         Bridgefy.start(
