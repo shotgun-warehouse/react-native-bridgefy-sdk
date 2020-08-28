@@ -373,8 +373,8 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
 }
 
 - (BOOL)transmitter:(BFTransmitter *)transmitter shouldConnectSecurelyWithUser:(NSString *)user {
-//    return YES;
-    return NO;
+    return YES;
+//    return NO;
 }
 
 - (void)transmitterNeedsInterfaceActivation:(BFTransmitter *)transmitter {
