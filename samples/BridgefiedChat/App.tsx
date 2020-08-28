@@ -13,7 +13,7 @@ import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 import BridgefySdk from 'react-native-bridgefy-sdk';
 
-const BRDG_LICENSE_KEY:string = "COPY YOU LICENSE KEY HERE";
+const BRDG_LICENSE_KEY:string = "370d04e6-5e17-40e9-b68b-264e21381665";
 
 const bridgefyEmitter = new NativeEventEmitter(BridgefySdk);
 
