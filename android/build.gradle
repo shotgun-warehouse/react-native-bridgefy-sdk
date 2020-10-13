@@ -40,5 +40,5 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:+"
-    implementation 'com.bridgefy:android-sdk:1.1.25'
+    implementation 'com.bridgefy:android-sdk:1.1.26'
 }
