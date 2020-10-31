@@ -41,9 +41,6 @@
 
 @implementation RNBridgefy
 
-RCTPromiseResolveBlock startResolve;
-RCTPromiseRejectBlock startReject;
-
 - (dispatch_queue_t)methodQueue
 {
     // main queue (blocking UI)
@@ -99,7 +96,8 @@ RCT_REMAP_METHOD(init, startWithApiKey:(NSString *)apiKey resolver:(RCTPromiseRe
         return;
     }
     self.transmitter = [[BFTransmitter alloc] initWithApiKey:apiKey];
-    
+    self.transmitter.backgroundModeEnabled = YES;
+
     if (self.transmitter != nil) {
         self.transmitter.delegate = self;
         NSDictionary * dictionary = [self createClientDictionary];
@@ -112,13 +110,12 @@ RCT_REMAP_METHOD(init, startWithApiKey:(NSString *)apiKey resolver:(RCTPromiseRe
     
 }
 
-RCT_EXPORT_METHOD(start:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(start) {
     if ( self.transmitter == nil ) {
         RCTLogError(@"Bridgefy was not initialized, the operation won't continue.");
         return;
     }
-    startResolve = resolve;
-    startReject = reject;
+
     [self.transmitter start];
 }
 
@@ -314,16 +311,20 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
 }
 
 - (void)transmitter:(BFTransmitter *)transmitter didDetectConnectionWithUser:(NSString *)user {
-    //TODO: Implement
-    NSLog(@"didDetectConnectionWithUser !!");
-    
+    NSLog(@"didDetectConnectionWithUser");
+    if (self.hasListeners) {
+        NSDictionary * userDict = @{
+            @"userId": user
+        };
+        [self sendEventWithName:kDeviceConnected body:userDict];
+    }
 }
 
 - (void)transmitter:(BFTransmitter *)transmitter didDetectDisconnectionWithUser:(NSString *)user {
     if (self.hasListeners) {
         NSDictionary * userDict = @{
-                                    @"userId": user
-                                    };
+            @"userId": user
+        };
         [self sendEventWithName:kDeviceDisconnected body:userDict];
     }
 }
@@ -336,10 +337,6 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
                                      };
         [self sendEventWithName:kStartedError body:errorDict];
     }
-
-    if (startReject != nil) {
-        startReject(kStartedError,error.localizedDescription, error);
-    }
 }
 
 - (void)transmitter:(BFTransmitter *)transmitter didOccurEvent:(BFEvent)event description:(NSString *)description {
@@ -348,11 +345,6 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
         if (self.hasListeners) {
             [self sendEventWithName:kStarted body:@{}]; // should we keep it?
         }
-
-        if (startResolve != nil) {
-            startResolve(@{});
-        }
-
     } else if (self.hasListeners) {
         NSDictionary * eventDict = @{
                                      @"code": @(event),
@@ -360,21 +352,6 @@ didReceiveDictionary:(NSDictionary<NSString *, id> * _Nullable) dictionary
                                      };
         [self sendEventWithName:kEventOccurred body:eventDict];
     }
-}
-
-- (void)transmitter:(BFTransmitter *)transmitter didDetectSecureConnectionWithUser:(NSString *)user {
-    NSLog(kDeviceConnected);
-    if (self.hasListeners) {
-        NSDictionary * userDict = @{
-                                    @"userId": user
-                                    };
-        [self sendEventWithName:kDeviceConnected body:userDict];
-    }
-}
-
-- (BOOL)transmitter:(BFTransmitter *)transmitter shouldConnectSecurelyWithUser:(NSString *)user {
-    return YES;
-//    return NO;
 }
 
 - (void)transmitterNeedsInterfaceActivation:(BFTransmitter *)transmitter {
