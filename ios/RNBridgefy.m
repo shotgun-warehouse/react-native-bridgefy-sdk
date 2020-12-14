@@ -127,7 +127,7 @@ RCT_EXPORT_METHOD(stop) {
 }
 
 RCT_REMAP_METHOD(sendMessage, sendMessage:(NSDictionary *) message) {
-    BFSendingOption options = (BFSendingOptionEncrypted | BFSendingOptionFullTransmission);
+    BFSendingOption options = BFSendingOptionFullTransmission;
     [self sendMessage:message WithOptions:options];
 }
 
