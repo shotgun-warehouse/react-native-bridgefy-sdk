@@ -183,6 +183,7 @@ android {
 repositories {
   maven {
     url "http://maven.bridgefy.com/artifactory/libs-release-local"
+        allowInsecureProtocol = true
     artifactUrls = ["http://jcenter.bintray.com/"]
   }
 }
