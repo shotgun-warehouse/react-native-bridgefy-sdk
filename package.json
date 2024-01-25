@@ -1,24 +1,11 @@
 {
-  "author": {
-    "name": "Bridgefy Development Team"
-  },
   "bugs": {
-    "url": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdk/issues"
+    "url": "https://github.com/shotgun-warehouse/react-native-bridgefy-sdk/issues"
   },
   "dependencies": {},
   "description": "Bridgefy SDK React Native module",
   "devDependencies": {},
-  "gitHead": "921ca9ae365b58f668fb720544f6e93e22aa9b4e",
-  "homepage": "https://bitbucket.org/bridgefy/react-native-bridgefy-sdk",
-  "keywords": [
-    "react-native",
-    "react-native-bridgefy",
-    "bridgefy",
-    "android",
-    "ios",
-    "mesh",
-    "offline"
-  ],
+  "homepage": "https://bridgefy.me/sdk/",
   "license": "MIT",
   "name": "react-native-bridgefy-sdk",
   "optionalDependencies": {},
@@ -26,14 +13,13 @@
     "react-native": ">= 0.60.0"
   },
   "private": false,
-  "readmeFilename": "README.md",
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/bridgefy/react-native-bridgefy-sdk.git"
+    "url": "git@github.com:shotgun-warehouse/react-native-bridgefy-sdk.git"
   },
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

@@ -1,5 +1,10 @@
 # React Native interface for Bridgefy
-This repository contains a module for [React Native](https://facebook.github.io/react-native/) that is an interface to use [Bridgefy SDK](https://www.bridgefy.me/), this interface can be used for Android and iOS projects. If you want to know how to use the framework natively in android, you can find it [here](https://github.com/bridgefy/bridgefy-android-samples/blob/master/README.md), in the other hand the official iOS repository is [here](https://bitbucket.org/bridgefy/bridgefy-ios-dist).
+
+This repository contains a module for [React Native](https://facebook.github.io/react-native/) that is an interface to use [Bridgefy SDK](https://bridgefy.me/sdk/).
+This interface can be used for Android and iOS projects.
+
+If you want to know how to use the framework natively in Android, you can find it [here](https://github.com/bridgefy/bridgefy-android-samples/blob/master/README.md)
+In the other hand the official iOS repository is [here](https://bitbucket.org/bridgefy/bridgefy-ios-dist).
 
 ## Install on existing project
 
@@ -8,12 +13,8 @@ This section explains how to add Bridgefy to an existing project with native cod
 
 Let's suppose your project name is `AwesomeProject`, go to the root directory of the project and run the following command:
 
-```
-npm install --save git+https://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git
-```
-or 
-```
-yarn add git+https://git@bitbucket.org/bridgefy/react-native-bridgefy-sdk.git
+```bash
+yarn add github:shotgun-warehouse/react-native-bridgefy-sdk
 ```
 
 It will download and install the bridgefy module.  
@@ -26,7 +27,8 @@ We assume you are using React Native >= 0.60.x (supports auto linking).
 Please follow those steps to have a working Android setup:
 
 * Edit your `android/build.gradle` file and ensure your are targetting Android SDK >= 21:
-```xml
+
+```groovy
 buildscript {
     ext {
         minSdkVersion = 21
@@ -34,26 +36,32 @@ buildscript {
 ```
 
 * Edit your `android/app/build.gradle` file to add the followind code:
-```xml
+```groovy
 repositories {
-  maven {
-    url "http://maven.bridgefy.com/artifactory/libs-release-local"
-    artifactUrls = ["http://jcenter.bintray.com/"]
-  }
+    maven {
+        // Bridgefy
+        url "http://34.82.5.94:8081/artifactory/libs-release-local/"
+        artifactUrls = ["https://jcenter.bintray.com/"]
+        allowInsecureProtocol = true
+    }
 }
 ```
 
-* Then add the following permissions in your `AndroidManifest.xml` file:  
-```java
-android.permission.BLUETOOTH
-android.permission.BLUETOOTH_ADMIN
-android.permission.INTERNET
-```
-If you're targeting devices with Android  6.0 (**API Level 23**) or higher, either one of the following permissions is also required:
+* Then add the following permissions in your `AndroidManifest.xml` file: 
+ 
+```xml
+<!-- For Android 6+ (API 23+) -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-```java
-android.permission.ACCESS_FINE_LOCATION
-android.permission.ACCESS_COARSE_LOCATION
+<!-- Request legacy Bluetooth permissions on older devices (API 30-) -->
+<uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+
+<!-- Request Bluetooth permissions on Android 12+ devices (API 31+) -->
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 ```
 
 ### iOS Install
@@ -70,7 +78,7 @@ Again, we assume you are using React Native >= 0.60 (with auto linking).
 
 ### Initialization
 
-First, make sure you have an API KEY to use the framework, if you don't have it, please go to the Bridgefy [site](https://www.bridgefy.me/) to get one. You will need to indicate the bundle id of your Android and iOS native projects.
+First, make sure you have an API KEY to use the framework, if you don't have it, please go to [the Bridgefy website](https://bridgefy.me/sdk/) to get one. You will need to indicate the bundle id of your Android and iOS native projects.
 
 To start to work with the framework in Javascript, you will have to import it to the `.js` file you will be working, so add the following code:
 
