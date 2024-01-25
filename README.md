@@ -64,6 +64,11 @@ repositories {
 <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 ```
 
+#### API 33+
+
+**IMPORTANT**: this repository is **NOT** compatible with Android API 33+ because the SDK asks for `BLUETOOTH` and `BLUETOOTH_ADMIN` permissions that are not available anymore.
+We should move to https://github.com/bridgefy/bridgefy-react-native that uses [me.bridgefy:android-sdk](http://34.82.5.94:8081/artifactory/libs-release-local/me/bridgefy/android-sdk/) instead of [com.bridgefy:android-sdk](http://34.82.5.94:8081/artifactory/libs-release-local/com/bridgefy/android-sdk/).
+
 ### iOS Install
 
 Again, we assume you are using React Native >= 0.60 (with auto linking).
